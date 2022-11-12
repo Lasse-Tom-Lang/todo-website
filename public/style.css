@@ -1,0 +1,168 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: linear-gradient(to right, #83ff8f, #70deff);
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  width: min(900px, 100%);
+  min-height: 600px;
+  border-radius: 20px;
+  box-shadow: 3px 3px 15px rgb(131, 131, 131);
+  background-color: rgb(245, 245, 245);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 15px;
+}
+
+main>div {
+  background-color: rgb(223, 223, 223);
+  width: 100%;
+  height: 45px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+h1 {
+  color: rgb(67, 67, 67);
+  cursor: default;
+}
+
+#addList {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 25px;
+  padding: 5px;
+  border-radius: 5px;
+  aspect-ratio: 46/36;
+  background-color: rgb(67, 67, 67);
+  cursor: pointer;
+  z-index: 100;
+}
+
+.addListName {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  width: 25px;
+  height: 26px;
+  border: none;
+  border-radius: 5px;
+  border-bottom: 1px solid rgb(180, 180, 180);
+  outline: none;
+  font-size: 18px;
+  padding: 1px 5px 3px 5px;
+  background-color: rgb(245, 245, 245);
+  opacity: 0;
+  transition: 0.4s all ease-in-out;
+}
+
+.addListNameActiv {
+  width: 140px;
+  border-radius: 0;
+  opacity: 1;
+}
+
+h2 {
+  align-self: flex-start;
+  margin-left: 30px;
+  margin-top: 15px;
+  color: red;
+  cursor: default;
+}
+
+ul {
+  align-self: flex-start;
+  margin-left: 30px;
+  margin-top: 5px;
+  width: 100%;
+}
+
+ul hr {
+  margin-left: 25px;
+  width: calc(100% - 90px);
+  border: 0.5px solid rgb(180, 180, 180);
+}
+
+li {
+  list-style-type: none;
+  margin-top: 8px;
+  margin-bottom: 5px;
+  position: relative;
+  margin-left: 25px;
+}
+
+li input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+}
+
+li label {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+li input[type="text"] {
+  border: 0;
+  outline: 0;
+  border-bottom: 1px solid rgb(180, 180, 180);
+  font-size: 18px;
+  padding-bottom: 3px;
+  width: calc(100% - 63px);
+  background-color: rgb(245, 245, 245);
+}
+
+li div {
+  border-radius: 50%;
+  width: 20px;
+  aspect-ratio: 1;
+  background-color: rgb(245, 245, 245);
+  position: absolute;
+  transform: translate(-30px, -21px);
+  border: 1px solid black;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+li div::before {
+  background-color: red;
+  content: "";
+  width: 24px;
+  aspect-ratio: 1;
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  transform: translateX(-30px);
+  transition: 0.2s all ease-in-out;
+}
+
+li input:checked+div::before {
+  transform: translateX(0px);
+}
+
+.notMarkable {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@media screen and (max-width: 900px) {
+  main {
+    border-radius: 0;
+  }
+}
