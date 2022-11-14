@@ -166,3 +166,35 @@ li input:checked+div::before {
     border-radius: 0;
   }
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+form input {
+  width: 250px;
+  font-size: 25px;
+  padding: 10px;
+  border: 0;
+  outline: 0;
+}
+
+form input:first-of-type {
+  border-radius: 15px 15px 0 0;
+  border-bottom: 1px solid grey;
+}
+form input:last-of-type {
+  border-radius: 0 0 15px 15px;
+  width: 270px;
+}
+
+form p {
+  font-size: 20px;
+  color: rgb(255, 45, 45);
+  margin: 5px;
+  text-align: center;
+}
