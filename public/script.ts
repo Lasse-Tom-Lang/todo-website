@@ -1,6 +1,39 @@
+interface userData {
+  id: string,
+  name: string,
+  todolists: {
+    id: string,
+    name: string,
+    todos: {
+      id: string,
+      done: boolean,
+      name: string
+    }[]
+  }[]
+}
+
+let userData:userData
+
+fetch("/getUserData")
+  .then((data) => data.json())
+  .then((data) => {
+    userData = data
+    title.innerHTML = `Hello ${userData.name}`
+    userData.todolists.forEach((list) => {
+      let newHTML1 = document.createElement("h2");
+      newHTML1.innerHTML = list.name;
+      main.appendChild(newHTML1);
+      let newHTML2 = document.createElement("ul");
+      newHTML2.innerHTML = "<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' onkeydown='addItem(event)'></li>";
+      main.appendChild(newHTML2);
+    })
+  })
+
 let main = document.querySelector("main")
 let title = document.querySelector("h1")
 let lists = document.querySelectorAll("li input[type='text']")
+let addList = document.querySelector("#addList") as HTMLImageElement
+let addListName = document.querySelector(".addListName") as HTMLInputElement
 
 function addItem(e) {
   if (e.keyCode == 13) {
@@ -31,16 +64,12 @@ function addItemBlur(e) {
   }
 };
 
-lists.forEach(element => {
-  element.addEventListener("keydown", e => addItem(e));
-  element.addEventListener("blur", e => addItemBlur(e));
+lists.forEach((element) => {
+  element.addEventListener("keydown", (e) => addItem(e));
+  element.addEventListener("blur", (e) => addItemBlur(e));
 });
 
-let addList = document.getElementById("addList") as HTMLImageElement;
-
-let addListName = document.querySelector(".addListName") as HTMLInputElement;
-
-addList.addEventListener("click", (e) => {
+addList.addEventListener("click", () => {
   addList.style.display = "none";
   addListName.classList.add("addListNameActiv")
   addListName.focus();
@@ -61,6 +90,7 @@ addListName.addEventListener("keydown", (e) => {
       let newHTML2 = document.createElement("ul");
       newHTML2.innerHTML = "<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' onkeydown='addItem(event)'></li>";
       main.appendChild(newHTML2);
+      fetch(`/addList?listName=${input}`)
     }
   }
 });

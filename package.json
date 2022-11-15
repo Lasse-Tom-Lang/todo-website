@@ -2,7 +2,7 @@
   "name": "todo-website",
   "version": "1.0.0",
   "description": "A small website for ToDo Lists",
-  "type": "module",
+  "type": "commonjs",
   "main": "index.js",
   "repository": {
     "type": "git",

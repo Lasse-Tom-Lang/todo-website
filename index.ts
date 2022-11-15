@@ -83,15 +83,51 @@ app.get("/getUserData", async (req, res) => {
       where: {
         id: req.session.userID
       },
-      include: {
+      select: {
+        name: true,
+        id: true,
         todolists: {
-          include: {
-            todos: true
+          select: {
+            id: true,
+            name: true,
+            todos: {
+              select: {
+                id: true,
+                name: true,
+                done: true
+              }
+            }
           }
         }
       }
     })
     res.json(userData)
+    res.end()
+  }
+  else {
+    res.json({"status": 0})
+    res.end()
+  }
+})
+
+app.get("/addList", async (req, res) => {
+  if (req.session.userID && req.query.listName) {
+    let listName = req.query.listName as string
+    let list = await prisma.toDoList.create({
+      data: {
+        name: listName,
+        user: {
+          connect: {
+            id: req.session.userID
+          }
+        }
+      },
+      select: {
+        id: true,
+        name: true
+      }
+    })
+    res.json(list)
     res.end()
   }
   else {
