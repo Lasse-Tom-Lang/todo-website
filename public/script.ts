@@ -14,6 +14,12 @@ interface userData {
 
 let userData:userData
 
+let main = document.querySelector("main") as HTMLElement
+let title = document.querySelector("h1") as HTMLHeadingElement
+let lists = document.querySelectorAll("li input[type='text']")
+let addList = document.querySelector("#addList") as HTMLImageElement
+let addListName = document.querySelector(".addListName") as HTMLInputElement
+
 fetch("/getUserData")
   .then((data) => data.json())
   .then((data) => {
@@ -24,18 +30,15 @@ fetch("/getUserData")
       newHTML1.innerHTML = list.name;
       main.appendChild(newHTML1);
       let newHTML2 = document.createElement("ul");
-      newHTML2.innerHTML = "<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' onkeydown='addItem(event)'></li>";
+      list.todos.forEach((item) => {
+        newHTML2.innerHTML += `<li><label><input type='checkbox' ${item.done?"checked":""}>${item.name}<div></div></label></li>`
+      })
+      newHTML2.innerHTML += `<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' data-id=${list.id} onkeydown='addItem(event)'></li>`;
       main.appendChild(newHTML2);
     })
   })
 
-let main = document.querySelector("main")
-let title = document.querySelector("h1")
-let lists = document.querySelectorAll("li input[type='text']")
-let addList = document.querySelector("#addList") as HTMLImageElement
-let addListName = document.querySelector(".addListName") as HTMLInputElement
-
-function addItem(e) {
+function addItem(e:KeyboardEvent) {
   if (e.keyCode == 13) {
 
     let input:string = e.target.value;
@@ -46,6 +49,7 @@ function addItem(e) {
 
       e.target.parentNode.parentNode.insertBefore(element, e.target.parentNode);
       e.target.parentNode.parentNode.insertBefore(document.createElement("hr"), e.target.parentNode);
+      fetch(`/addToDo?todo=${input}&todolist=${e.target.getAttribute("data-id")}`)
     }
   }
 };
@@ -61,6 +65,7 @@ function addItemBlur(e) {
 
     e.target.parentNode.parentNode.insertBefore(element, e.target.parentNode);
     e.target.parentNode.parentNode.insertBefore(document.createElement("hr"), e.target.parentNode);
+    fetch(`/addToDo?todo=${input}&todolist=${e.target.getAttribute("data-id")}`)
   }
 };
 
@@ -84,13 +89,16 @@ addListName.addEventListener("keydown", (e) => {
     e.target.value = "";
 
     if (input.trim().length != 0) {
-      let newHTML1 = document.createElement("h2");
-      newHTML1.innerHTML = input;
-      main.appendChild(newHTML1);
-      let newHTML2 = document.createElement("ul");
-      newHTML2.innerHTML = "<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' onkeydown='addItem(event)'></li>";
-      main.appendChild(newHTML2);
       fetch(`/addList?listName=${input}`)
+        .then((data) => data.json())
+        .then((data) => {
+          let newHTML1 = document.createElement("h2");
+          newHTML1.innerHTML = input;
+          main.appendChild(newHTML1);
+          let newHTML2 = document.createElement("ul");
+          newHTML2.innerHTML = `<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' data-id=${data.id} onkeydown='addItem(event)'></li>`;
+          main.appendChild(newHTML2);
+        })
     }
   }
 });

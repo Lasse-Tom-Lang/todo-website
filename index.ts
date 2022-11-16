@@ -135,3 +135,31 @@ app.get("/addList", async (req, res) => {
     res.end()
   }
 })
+
+app.get("/addToDo", async (req, res) => {
+  if (req.session.userID && req.query.todo && req.query.todolist) {
+    let todoName = req.query.todo as string
+    let todolist = req.query.todolist as string
+    let todo = await prisma.toDoItem.create({
+      data: {
+        name: todoName,
+        done: false,
+        todolist: {
+          connect: {
+            id: todolist
+          }
+        }
+      },
+      select: {
+        id: true,
+        name: true
+      }
+    })
+    res.json(todo)
+    res.end()
+  }
+  else {
+    res.json({"status": 0})
+    res.end()
+  }
+})
