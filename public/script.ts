@@ -20,6 +20,18 @@ let lists = document.querySelectorAll("li input[type='text']")
 let addList = document.querySelector("#addList") as HTMLImageElement
 let addListName = document.querySelector(".addListName") as HTMLInputElement
 
+function addToDo(toDoName: string, done: boolean) {
+  return `
+    <li>
+      <label>
+        <input type="checkbox" ${done?"checked":""}>
+        ${toDoName}
+        <div/>
+      </label>
+    </li>
+  `
+}
+
 fetch("/getUserData")
   .then((data) => data.json())
   .then((data) => {
@@ -31,7 +43,7 @@ fetch("/getUserData")
       main.appendChild(newHTML1);
       let newHTML2 = document.createElement("ul");
       list.todos.forEach((item) => {
-        newHTML2.innerHTML += `<li><label><input type='checkbox' ${item.done?"checked":""}>${item.name}<div></div></label></li>`
+        newHTML2.innerHTML += addToDo(item.name, item.done)
       })
       newHTML2.innerHTML += `<li><input type='text' placeholder='New ToDo' onblur='addItemBlur(event)' data-id=${list.id} onkeydown='addItem(event)'></li>`;
       main.appendChild(newHTML2);
@@ -39,39 +51,37 @@ fetch("/getUserData")
   })
 
 function addItem(e:KeyboardEvent) {
-  if (e.keyCode == 13) {
-
-    let input:string = e.target.value;
+  if (e.key == "Enter") {
+    let target = e.target as HTMLInputElement
+    let input = target.value;
     if (input.trim().length != 0){
-      e.target.value = "";
+      target.value = "";
       let element = document.createElement("li") as HTMLLIElement;
       element.innerHTML = "<label><input type='checkbox'>"+ input + "<div></div></label>";
-
-      e.target.parentNode.parentNode.insertBefore(element, e.target.parentNode);
-      e.target.parentNode.parentNode.insertBefore(document.createElement("hr"), e.target.parentNode);
-      fetch(`/addToDo?todo=${input}&todolist=${e.target.getAttribute("data-id")}`)
+      target.parentNode!.parentNode!.insertBefore(element, target.parentNode);
+      target.parentNode!.parentNode!.insertBefore(document.createElement("hr"), target.parentNode);
+      fetch(`/addToDo?todo=${input}&todolist=${target.getAttribute("data-id")}`)
     }
   }
 };
 
-function addItemBlur(e) {
-
-  let input:string = e.target.value;
-
+function addItemBlur(e:Event) {
+  let target = e.target as HTMLInputElement
+  let input:string = target.value;
   if (input.trim().length != 0){
-    e.target.value = "";
+    target.value = "";
     let element = document.createElement("li") as HTMLLIElement;
     element.innerHTML = "<label><input type='checkbox'>"+ input + "<div></div></label>";
 
-    e.target.parentNode.parentNode.insertBefore(element, e.target.parentNode);
-    e.target.parentNode.parentNode.insertBefore(document.createElement("hr"), e.target.parentNode);
-    fetch(`/addToDo?todo=${input}&todolist=${e.target.getAttribute("data-id")}`)
+    target.parentNode!.parentNode!.insertBefore(element, target.parentNode);
+    target.parentNode!.parentNode!.insertBefore(document.createElement("hr"), target.parentNode);
+    fetch(`/addToDo?todo=${input}&todolist=${target.getAttribute("data-id")}`)
   }
 };
 
 lists.forEach((element) => {
-  element.addEventListener("keydown", (e) => addItem(e));
-  element.addEventListener("blur", (e) => addItemBlur(e));
+  element.addEventListener("keydown", (e) => addItem);
+  element.addEventListener("blur", addItemBlur);
 });
 
 addList.addEventListener("click", () => {
@@ -81,12 +91,12 @@ addList.addEventListener("click", () => {
 });
 
 addListName.addEventListener("keydown", (e) => {
-  if (e.keyCode == 13) {
-    addListName.classList = "addListName";
+  if (e.key == "Enter") {
+    addListName.classList.value = "addListName";
     addList.style.display = "block";
-
-    let input = e.target.value;
-    e.target.value = "";
+    let target = e.target as HTMLInputElement
+    let input = target.value;
+    target.value = "";
 
     if (input.trim().length != 0) {
       fetch(`/addList?listName=${input}`)
