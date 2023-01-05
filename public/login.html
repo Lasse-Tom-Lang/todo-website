@@ -16,12 +16,28 @@
         <input type="text" id="username" placeholder="Username">
         <input type="password" id="password" placeholder="Password">
         <input type="submit" value="Login">
+        <p>
+          or
+        </p>
+        <button id="startRegister">
+          Register
+        </button>
+      </form>
+      <form id="registerForm">
+        <h1>
+          Register
+        </h1>
+        <input type="text" id="registerName" placeholder="Username">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <input type="submit" value="Register">
       </form>
       <script>
         let username = document.getElementById("username")
         let password = document.getElementById("password")
         let error = document.querySelector("form p")
-        document.querySelector("form").addEventListener("submit", (event) => {
+        let startRegister = document.getElementById("startRegister")
+        let registerForm = document.getElementById("registerForm")
+        document.querySelector("form:first-of-type").addEventListener("submit", (event) => {
           event.preventDefault()
           fetch(`/login?username=${username.value}&password=${password.value}`)
             .then((data) => data.json())
@@ -33,6 +49,9 @@
                 error.innerHTML = "Login failed"
               }
             })
+        })
+        startRegister.addEventListener("click", (e) => {
+          e.preventDefault()
         })
       </script>
     </main>

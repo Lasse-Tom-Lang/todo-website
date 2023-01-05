@@ -15,7 +15,7 @@ body {
 
 main {
   width: min(900px, 100%);
-  min-height: 600px;
+  min-height: 500px;
   border-radius: 20px;
   box-shadow: 3px 3px 15px rgb(131, 131, 131);
   background-color: rgb(245, 245, 245);
@@ -192,9 +192,40 @@ form input:last-of-type {
   width: 270px;
 }
 
-form p {
+form p:first-of-type {
   font-size: 20px;
   color: rgb(255, 45, 45);
   margin: 5px;
   text-align: center;
+}
+
+form p:last-of-type {
+  font-size: 20px;
+  color: grey;
+  margin: 8px;
+  text-align: center;
+}
+
+form button {
+  font-size: 25px;
+  cursor: pointer;
+  outline: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+#registerForm {
+  width: 300px;
+  height: min(calc(100% - 20px), 500px);
+  border-radius: 20px;
+  box-shadow: 3px 3px 15px rgb(131, 131, 131);
+  background-color: rgb(245, 245, 245);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#registerForm h1 {
+  margin-bottom: 20px;
 }
