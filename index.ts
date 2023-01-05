@@ -163,3 +163,25 @@ app.get("/addToDo", async (req, res) => {
     res.end()
   }
 })
+
+app.get("/updateToDo", async (req, res) => {
+  if (req.query.todoID && req.query.todoDone != undefined) {
+    let todoID = req.query.todoID as string
+    let todoDone = req.query.todoDone as string
+    let done = todoDone=="1"?true:false
+    await prisma.toDoItem.update({
+      where: {
+        id: todoID
+      },
+      data: {
+        done: done
+      }
+    })
+    res.json({"status": 1})
+    res.end()
+  }
+  else {
+    res.json({"status": 0})
+    res.end()
+  }
+})
