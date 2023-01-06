@@ -220,7 +220,7 @@ form button {
   border-radius: 20px;
   box-shadow: 3px 3px 15px rgb(131, 131, 131);
   background-color: rgb(245, 245, 245);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: column;

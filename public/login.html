@@ -34,9 +34,12 @@
       <script>
         let username = document.getElementById("username")
         let password = document.getElementById("password")
+        let registerName = document.getElementById("registerName")
+        let registerPassword = document.getElementById("registerPassword")
         let error = document.querySelector("form p")
         let startRegister = document.getElementById("startRegister")
         let registerForm = document.getElementById("registerForm")
+        let canRegister = false
         document.querySelector("form:first-of-type").addEventListener("submit", (event) => {
           event.preventDefault()
           fetch(`/login?username=${username.value}&password=${password.value}`)
@@ -52,6 +55,31 @@
         })
         startRegister.addEventListener("click", (e) => {
           e.preventDefault()
+          registerForm.style.display = "flex"
+        })
+        registerName.addEventListener("blur", () => {
+          fetch(`/canRegister?username=${registerName.value}`)
+            .then(data => data.json())
+            .then((data) => {
+              if (data.status == 1) {
+                canRegister = true
+                registerName.style.border = ""
+              }
+              else {
+                canRegister = false
+                registerName.style.border = "1px solid red"
+              }
+            })
+        })
+        registerForm.addEventListener("submit", (event) => {
+          event.preventDefault()
+          if (canRegister && registerName.value.trim() != "" && registerPassword.value.trim() != "") {
+            fetch(`/addUser?username=${registerName.value}&password=${registerPassword.value}`)
+            registerForm.style.display = "none"
+            registerName.value = ""
+            registerPassword.value = ""
+            canRegister = false
+          }
         })
       </script>
     </main>

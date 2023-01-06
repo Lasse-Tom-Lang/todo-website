@@ -185,3 +185,45 @@ app.get("/updateToDo", async (req, res) => {
     res.end()
   }
 })
+
+app.get("/addUser", async (req, res) => {
+  if (req.query.username && req.query.password) {
+    let username = req.query.username as string
+    let password = crypto.createHash('sha256').update(req.query.password).digest('base64') as string
+    await prisma.user.create({
+      data: {
+        name: username,
+        password: password
+      }
+    })
+    res.json({"status": 1})
+    res.end()
+  }
+  else {
+    res.json({"status": 0})
+    res.end()
+  }
+})
+
+app.get("/canRegister", async (req, res) => {
+  if (req.query.username) {
+    let username = req.query.username as string
+    let user = await prisma.user.findUnique({
+      where: {
+        name: username
+      }
+    })
+    if (user) {
+      res.json({"status": 0})
+      res.end()
+    }
+    else {
+      res.json({"status": 1})
+      res.end()
+    }
+  }
+  else {
+    res.json({"status": 0})
+    res.end()
+  }
+})
