@@ -1,0 +1,28 @@
+version: "3.9"
+
+services: 
+  database:
+    image: mysql:latest
+    container_name: database
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_DATABASE=db
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    restart: unless-stopped
+  server:
+    container_name: server
+    build: ./
+    ports:
+      - 80:80
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=mysql://root:12345678@database:3306/db
+    command: bash -c "npx prisma migrate dev && node index.js"
+
+volumes:
+  db:
