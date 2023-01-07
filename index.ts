@@ -227,3 +227,8 @@ app.get("/canRegister", async (req, res) => {
     res.end()
   }
 })
+
+app.get("/logout", (req, res) => {
+  req.session.userID = undefined
+  res.redirect("/")
+})

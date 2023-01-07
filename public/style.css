@@ -34,6 +34,7 @@ main>div {
   height: 45px;
   text-align: center;
   padding-top: 10px;
+  position: relative;
 }
 
 h1 {
@@ -228,4 +229,14 @@ form button {
 
 #registerForm h1 {
   margin-bottom: 20px;
+}
+
+#logout {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: 10px -50%;
+  font-size: 20px;
+  text-decoration: none;
+  color: black;
 }
